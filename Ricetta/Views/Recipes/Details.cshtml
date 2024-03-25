@@ -1,0 +1,64 @@
+﻿@model Ricetta.Data.Entities.Recipe;
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+<br />
+@if (ViewData["TagName"] != null)
+{
+    <h1><a asp-controller="Recipes" asp-action="Profile" asp-route-id="@Model.MemberId">@ViewData["TagName"]</a></h1>
+}
+
+<h1><a asp-controller="Recipes" asp-action="Save" asp-route-id="@Model.Id">Opslaan</a></h1>
+}
+
+<div>
+    <h4>Recipe</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MemberId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MemberId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+   
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Category.Name)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ingredients)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var ingredient in Model.Ingredients)
+            {
+                <div>@ingredient.Name</div>
+            }
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PreparationSteps)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var step in Model.PreparationSteps)
+            {
+                <div>@step.Step</div>
+            }
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
