@@ -1,4 +1,4 @@
-$(document).ready(function () {
+/*$(document).ready(function () {
     let ingredientIndex = 1;
     console.log("test");
 
@@ -16,4 +16,24 @@ $(document).ready(function () {
     $('#ingredientContainer').on('click', '.remove-ingredient', function () {
         $(this).closest('.ingredient-row').remove();
     });
-});
+});*/
+
+class SearchBar extends HTMLElement {
+
+    shadowRoot;
+    constructor() {
+        super();
+        this.shadowRoot = this.attachShadow({ mode: 'open' });
+        this.shadowRoot.innerHTML = `<input type="text"/>
+        <p>type</p>`;
+        this.addEventListener();
+    }
+
+    addEventListener() {
+        this.shadowRoot.querySelector(`input`).addEventListener('keyup', (event) => {
+            this.shadowRoot.querySelector(`p`).innerHTML = event.target.value;
+        });
+    }
+}
+
+customElements.define('search-bar', SearchBar);

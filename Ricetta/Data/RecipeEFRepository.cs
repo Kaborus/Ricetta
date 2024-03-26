@@ -58,30 +58,33 @@ namespace Ricetta.Data
                 .ToListAsync();
 
             // Initialiseer de lijst van RecipeListItemViewModel
-            ICollection<RecipeListItemViewModel> recipes = new List<RecipeListItemViewModel>();
+            ICollection<RecipeListItemViewModel> recipeListViewModels = new List<RecipeListItemViewModel>();
 
             // Loop door de opgeslagen recepten en converteer ze naar RecipeListItemViewModel
             foreach (var savedRecipe in savedRecipes)
             {
                 // Haal het bijbehorende recept op
-                var recipe = await _context.Recipes.FindAsync(savedRecipe.RecipeId);
+                var recipe = await _context.Recipes
+                    .Include(r => r.Category) // Zorg ervoor dat de categorie wordt geladen
+                    .FirstOrDefaultAsync(r => r.Id == savedRecipe.RecipeId);
+
                 if (recipe != null)
                 {
                     // Maak een nieuw RecipeListItemViewModel en voeg het toe aan de collectie
-                    var recipeViewModel = new RecipeListItemViewModel
+                    var recipeListItemViewModel = new RecipeListItemViewModel
                     {
-                        // Vul de eigenschappen van de RecipeListItemViewModel in met de gegevens van het recept
                         RecipeId = recipe.Id,
                         Name = recipe.Name,
-                        // Voeg eventuele andere eigenschappen toe die je nodig hebt
+                        Category = recipe.Category != null ? recipe.Category.Name : "Geen categorie" // Controleer of de categorie niet null is voordat je de naam ophaalt
+                                                                                                     // Voeg eventuele andere eigenschappen toe die je nodig hebt
                     };
-                    recipes.Add(recipeViewModel);
+                    recipeListViewModels.Add(recipeListItemViewModel);
                 }
             }
 
-            // Retourneer de lijst van RecipeListItemViewModel
-            return recipes;
+            return recipeListViewModels;
         }
+
 
 
         public async Task<Recipe> GetById(int? id)
@@ -99,7 +102,7 @@ namespace Ricetta.Data
         {
             await _context.SavedRecipes.AddAsync(recipe);
             await _context.SaveChangesAsync();
-            
+
         }
 
         public Task<ICollection<Recipe>> Search(string criteria)
