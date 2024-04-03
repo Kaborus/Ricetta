@@ -1,5 +1,5 @@
 
-const LobbyModule = (() => {
+const LobbyModule = (function () {
     var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 
     //Disable the send button until connection is established.
@@ -33,13 +33,13 @@ const LobbyModule = (() => {
         event.preventDefault();
     });
 
-    window.addEventListener("beforeunload", () => {
+    /*window.addEventListener("beforeunload", () => {
         connection.invoke("LeaveGroup", window.LobbyId).catch((err) => {
             console.error(err.toString());
-        });
+        });*/
     
         return {};
-    })();
+//})();
 })
 
 const module = new LobbyModule();
