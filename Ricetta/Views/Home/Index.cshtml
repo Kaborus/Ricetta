@@ -1,5 +1,11 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@using Ricetta.Data.Entities
+@inject SignInManager<Member> SignInManager
+@inject UserManager<Member> UserManager;
+@{
     ViewData["Title"] = "Home Page";
+    var member = await UserManager.FindByIdAsync(UserManager.GetUserId(this.User));
+    var tagName = member?.Tagname;
 }
 
 <div class="text-center">
@@ -10,7 +16,6 @@
 <hello-world></hello-world>
 
 <recipe-message></recipe-message>
-
 
 @section Scripts {
     <script src="~/js/message.js"></script>

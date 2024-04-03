@@ -1,16 +1,12 @@
 class Message extends HTMLElement {
-    shadowRoot;
     constructor() {
         super();
-        this.shadowRoot = this.attachShadow({ mode: 'open' });
+        this.attachShadow({ mode: 'open' });
         //this.shadowRoot.innerHTML = `<p>Test</p`;
 
         this.createMessage();
-        //this.addEventListener();
-    }
-
-    connectedCallback() {
         this.attachStyling();
+        this.addEventListener();
     }
 
     createMessage() {
@@ -23,14 +19,14 @@ class Message extends HTMLElement {
     attachStyling() {
         const link = document.createElement('link');
         link.setAttribute('rel', 'stylesheet');
-        link.setAttribute('href', '~/css/message.css');
+        link.setAttribute('href', '/css/message.css');
         this.shadowRoot.appendChild(link);
     }
 
     addEventListener() {
-        this.shadowRoot.querySelector(`close`).addEventListener('click', () => {
+        /*this.shadowRoot.querySelector(`close`).addEventListener('click', () => {
             this.shadowRoot.removeChild('recipe-message');
-        });
+        });*/
     }
 }
 

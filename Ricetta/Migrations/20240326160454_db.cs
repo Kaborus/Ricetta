@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Ricetta.Migrations
 {
     /// <inheritdoc />
-    public partial class identity : Migration
+    public partial class db : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -171,14 +171,60 @@ namespace Ricetta.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Inboxes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<string>(type: "TEXT", nullable: false),
+                    ReceiverId = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Inboxes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Inboxes_AspNetUsers_ReceiverId",
+                        column: x => x.ReceiverId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Inboxes_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SavedRecipes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<string>(type: "TEXT", nullable: false),
+                    RecipeId = table.Column<int>(type: "INTEGER", nullable: false),
+                    MemberId = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SavedRecipes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SavedRecipes_AspNetUsers_MemberId",
+                        column: x => x.MemberId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Recipes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    MemberId = table.Column<string>(type: "TEXT", nullable: true),
                     Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    CategoryId = table.Column<int>(type: "INTEGER", nullable: false),
-                    MemberId = table.Column<string>(type: "TEXT", nullable: true)
+                    CategoryId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -194,6 +240,40 @@ namespace Ricetta.Migrations
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Content = table.Column<string>(type: "TEXT", nullable: false),
+                    SentAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    SenderId = table.Column<string>(type: "TEXT", nullable: false),
+                    RecipientId = table.Column<string>(type: "TEXT", nullable: false),
+                    InboxId = table.Column<int>(type: "INTEGER", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Messages_AspNetUsers_RecipientId",
+                        column: x => x.RecipientId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Messages_AspNetUsers_SenderId",
+                        column: x => x.SenderId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Messages_Inboxes_InboxId",
+                        column: x => x.InboxId,
+                        principalTable: "Inboxes",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -274,9 +354,34 @@ namespace Ricetta.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Inboxes_ReceiverId",
+                table: "Inboxes",
+                column: "ReceiverId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Inboxes_UserId",
+                table: "Inboxes",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Ingredients_RecipeId",
                 table: "Ingredients",
                 column: "RecipeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_InboxId",
+                table: "Messages",
+                column: "InboxId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_RecipientId",
+                table: "Messages",
+                column: "RecipientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_SenderId",
+                table: "Messages",
+                column: "SenderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PreparationSteps_RecipeId",
@@ -291,6 +396,11 @@ namespace Ricetta.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Recipes_MemberId",
                 table: "Recipes",
+                column: "MemberId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SavedRecipes_MemberId",
+                table: "SavedRecipes",
                 column: "MemberId");
         }
 
@@ -316,10 +426,19 @@ namespace Ricetta.Migrations
                 name: "Ingredients");
 
             migrationBuilder.DropTable(
+                name: "Messages");
+
+            migrationBuilder.DropTable(
                 name: "PreparationSteps");
 
             migrationBuilder.DropTable(
+                name: "SavedRecipes");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Inboxes");
 
             migrationBuilder.DropTable(
                 name: "Recipes");

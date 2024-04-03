@@ -11,8 +11,8 @@ using Ricetta.Data;
 namespace Ricetta.Migrations
 {
     [DbContext(typeof(RicettaDbContext))]
-    [Migration("20240322130830_saveddbset")]
-    partial class saveddbset
+    [Migration("20240326160454_db")]
+    partial class db
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -167,6 +167,29 @@ namespace Ricetta.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("Ricetta.Data.Entities.Inbox", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ReceiverId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiverId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Inboxes");
+                });
+
             modelBuilder.Entity("Ricetta.Data.Entities.Ingredient", b =>
                 {
                     b.Property<int>("Id")
@@ -253,6 +276,41 @@ namespace Ricetta.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Ricetta.Data.Entities.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("InboxId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("RecipientId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SenderId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("SentAt")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InboxId");
+
+                    b.HasIndex("RecipientId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("Ricetta.Data.Entities.PreparationStep", b =>
@@ -375,6 +433,25 @@ namespace Ricetta.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Ricetta.Data.Entities.Inbox", b =>
+                {
+                    b.HasOne("Ricetta.Data.Entities.Member", "Receiver")
+                        .WithMany()
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Ricetta.Data.Entities.Member", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Receiver");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Ricetta.Data.Entities.Ingredient", b =>
                 {
                     b.HasOne("Ricetta.Data.Entities.Recipe", "Recipe")
@@ -384,6 +461,29 @@ namespace Ricetta.Migrations
                         .IsRequired();
 
                     b.Navigation("Recipe");
+                });
+
+            modelBuilder.Entity("Ricetta.Data.Entities.Message", b =>
+                {
+                    b.HasOne("Ricetta.Data.Entities.Inbox", null)
+                        .WithMany("Messages")
+                        .HasForeignKey("InboxId");
+
+                    b.HasOne("Ricetta.Data.Entities.Member", "Recipient")
+                        .WithMany()
+                        .HasForeignKey("RecipientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Ricetta.Data.Entities.Member", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Recipient");
+
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("Ricetta.Data.Entities.PreparationStep", b =>
@@ -422,6 +522,11 @@ namespace Ricetta.Migrations
             modelBuilder.Entity("Ricetta.Data.Entities.Category", b =>
                 {
                     b.Navigation("Recipes");
+                });
+
+            modelBuilder.Entity("Ricetta.Data.Entities.Inbox", b =>
+                {
+                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("Ricetta.Data.Entities.Member", b =>

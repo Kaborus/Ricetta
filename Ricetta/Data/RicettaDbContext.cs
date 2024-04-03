@@ -29,6 +29,21 @@ namespace Ricetta.Data
                         WithMany(c => c.Recipes).
                         HasForeignKey(r => r.CategoryId);
                 });
+
+            modelBuilder.Entity<Message>()
+            .HasOne(m => m.Sender)
+            .WithMany()
+            .HasForeignKey(m => m.SenderId);
+
+            modelBuilder.Entity<Message>()
+                .HasOne(m => m.Recipient)
+                .WithMany()
+                .HasForeignKey(m => m.RecipientId);
+
+            modelBuilder.Entity<Inbox>()
+                .HasOne(i => i.User)
+                .WithMany()
+                .HasForeignKey(i => i.UserId);
         }
 
         public RicettaDbContext(DbContextOptions<RicettaDbContext> options) : base(options)
@@ -42,13 +57,7 @@ namespace Ricetta.Data
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<PreparationStep> PreparationSteps { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<Inbox> Inboxes { get; set; }
     }
-
-    /*public class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
-    {
-        public void Configure(EntityTypeBuilder<Recipe> builder)
-        {
-
-        }
-    }*/
 }
