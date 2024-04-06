@@ -15,7 +15,7 @@ builder.Services.AddDbContext<RicettaDbContext>(options => options.UseSqlite(con
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<Member>(options => options.SignIn.RequireConfirmedAccount = true)
-    /*.AddRoles<IdentityRole>()*/
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<RicettaDbContext>();
 
 builder.Services.AddSignalR();

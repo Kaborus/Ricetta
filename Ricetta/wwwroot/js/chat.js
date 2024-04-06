@@ -1,4 +1,44 @@
+//import Message from '.~/js/message.js';
 
+class Message extends HTMLElement {
+    constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+        //this.shadowRoot.innerHTML = `<p>Test</p`;
+
+        this.createMessage();
+        this.attachStyling();
+        this.addEventListener();
+    }
+
+    createMessage() {
+        const box = document.createElement('div');
+        box.setAttribute('class', 'message');
+        const closebtn = document.createElement('button');
+        closebtn.textContent = "X";
+        box.innerHTML = "Test";
+        this.shadowRoot.appendChild(box);
+        this.shadowRoot.appendChild(closebtn);
+    }
+
+    attachStyling() {
+        const link = document.createElement('link');
+        link.setAttribute('rel', 'stylesheet');
+        link.setAttribute('href', '/css/message.css');
+        this.shadowRoot.appendChild(link);
+    }
+
+    addEventListener() {
+        this.shadowRoot.querySelector(`button`).addEventListener('click', () => {
+            alert("Test geslaagd")
+            this.shadowRoot.removeChild('recipe-message');
+        });
+    }
+}
+
+
+
+//export default Message;
 const LobbyModule = (function () {
     var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 
@@ -54,7 +94,11 @@ const connection = new signalR.HubConnectionBuilder()
 connection.on("RecipeCreated", (recipeName, categoryName) => {
     // Toon de melding aan de gebruiker
 
+
     alert(`Nieuw recept aangemaakt: ${recipeName}, wat de categorie ${categoryName} heeft`);
+    customElements.define('recipe-message', Message);
+
+    //customElements.define('recipe - message', Message);
 });
 
 connection.start().catch(err => console.error(err.toString()));

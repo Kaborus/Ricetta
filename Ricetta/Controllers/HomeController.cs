@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ricetta.Data;
 using Ricetta.Data.Entities;
 using Ricetta.Models;
+using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 
@@ -28,9 +30,12 @@ namespace Ricetta.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Privacy()
         {
-            return View();
+
+            var users = await _userManager.Users.ToListAsync();
+            return View(users);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

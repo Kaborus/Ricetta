@@ -17,6 +17,7 @@ namespace Ricetta.Data
         Task Edit(Recipe recipe);
         Task Delete(Recipe recipe);
         Task Save(SavedRecipe recipe);
+        string GetCategory(int id);
         IEnumerable<Category> GetAllCategories();
     }
 }

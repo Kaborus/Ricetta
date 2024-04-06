@@ -35,3 +35,5 @@ class Message extends HTMLElement {
 }
 
 customElements.define('recipe-message', Message);
+
+//export default Message;

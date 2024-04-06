@@ -108,7 +108,7 @@ namespace Ricetta.Controllers
                 await _recipesRepository.Create(recipe);
 
                 
-                await _hub.Clients.All.SendAsync("RecipeCreated", recipe.Name,"" /*_recipesRepository.GetCategory(recipe.CategoryId)*/);
+                await _hub.Clients.All.SendAsync("RecipeCreated", recipe.Name, _recipesRepository.GetCategory(recipe.CategoryId));
 
                 return RedirectToAction(nameof(Index));
             }
