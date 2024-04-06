@@ -7,10 +7,13 @@ using Humanizer.DateTimeHumanizeStrategy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using Ricetta.Data;
 using Ricetta.Data.Entities;
+using Ricetta.Hubs;
+using Ricetta.Migrations;
 using Ricetta.Models;
 
 namespace Ricetta.Controllers
@@ -20,12 +23,14 @@ namespace Ricetta.Controllers
         private readonly IRecipesRepository _recipesRepository;
         private readonly UserManager<Member> _userManager;
         private readonly SignInManager<Member> _signInManager;
+        private readonly IHubContext<ChatHub> _hub;
 
-        public RecipesController(IRecipesRepository recipesRepository, UserManager<Member> userManager, SignInManager<Member> signInManager)
+        public RecipesController(IRecipesRepository recipesRepository, UserManager<Member> userManager, SignInManager<Member> signInManager, IHubContext<ChatHub> hub)
         {
             _recipesRepository = recipesRepository;
             _userManager = userManager;
             _signInManager = signInManager;
+            _hub = hub;
         }
 
         public async Task<IActionResult> Profile(string? id)
@@ -63,8 +68,6 @@ namespace Ricetta.Controllers
 
             var recipe = await _recipesRepository.GetById(id);
 
-       
-        
             Member member = await _userManager.FindByIdAsync(recipe.MemberId);
             string tagName = member?.Tagname;
 
@@ -101,7 +104,12 @@ namespace Ricetta.Controllers
                 string? userId = _userManager.GetUserId(this.User);
                 recipe.MemberId = userId;
 
+
                 await _recipesRepository.Create(recipe);
+
+                
+                await _hub.Clients.All.SendAsync("RecipeCreated", recipe.Name,"" /*_recipesRepository.GetCategory(recipe.CategoryId)*/);
+
                 return RedirectToAction(nameof(Index));
             }
             else

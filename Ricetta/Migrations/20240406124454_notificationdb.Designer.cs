@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Ricetta.Data;
 
@@ -10,9 +11,11 @@ using Ricetta.Data;
 namespace Ricetta.Migrations
 {
     [DbContext(typeof(RicettaDbContext))]
-    partial class RicettaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240406124454_notificationdb")]
+    partial class notificationdb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.3");

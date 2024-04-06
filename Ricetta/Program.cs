@@ -22,6 +22,7 @@ builder.Services.AddSignalR();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IRecipesRepository,RecipeEFRepository>();
+//builder.Services.AddSingleton<ChatHub>();
 
 var app = builder.Build();
 

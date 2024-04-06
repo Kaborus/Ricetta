@@ -35,15 +35,15 @@ namespace Ricetta.Data
             .WithMany()
             .HasForeignKey(m => m.SenderId);
 
-            modelBuilder.Entity<Message>()
-                .HasOne(m => m.Recipient)
-                .WithMany()
-                .HasForeignKey(m => m.RecipientId);
-
             modelBuilder.Entity<Inbox>()
                 .HasOne(i => i.User)
                 .WithMany()
                 .HasForeignKey(i => i.UserId);
+
+            modelBuilder.Entity<Message>()
+                .HasOne(m => m.Inbox)
+                .WithMany(i => i.Messages)
+                .HasForeignKey(m => m.InboxId);
         }
 
         public RicettaDbContext(DbContextOptions<RicettaDbContext> options) : base(options)
@@ -59,5 +59,6 @@ namespace Ricetta.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Inbox> Inboxes { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
     }
 }

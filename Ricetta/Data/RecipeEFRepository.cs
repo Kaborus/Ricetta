@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Ricetta.Data.Entities;
 using Ricetta.Models;
+using Ricetta.Hubs;
 
 namespace Ricetta.Data
 {
@@ -43,6 +44,13 @@ namespace Ricetta.Data
         {
             ICollection<RecipeListItemViewModel> recipes = await _context.Recipes.Where(r => r.MemberId == userId).Select(l => new RecipeListItemViewModel() { RecipeId = l.Id, Name = l.Name, Category = l.Category.Name }).ToListAsync();
             return recipes;
+        }
+
+        public string GetCategory(int id)
+        {
+
+            var category = _context.Categories.FirstOrDefault(c => c.Id == id);
+            return category.Name;
         }
 
         public IEnumerable<Category> GetAllCategories()

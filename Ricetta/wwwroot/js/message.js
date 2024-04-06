@@ -12,10 +12,13 @@ class Message extends HTMLElement {
     createMessage() {
         const box = document.createElement('div');
         box.setAttribute('class', 'message');
+        const closebtn = document.createElement('button');
+        closebtn.textContent = "X";
         box.innerHTML = "Test";
         this.shadowRoot.appendChild(box);
+        this.shadowRoot.appendChild(closebtn);
     }
-    
+
     attachStyling() {
         const link = document.createElement('link');
         link.setAttribute('rel', 'stylesheet');
@@ -24,9 +27,10 @@ class Message extends HTMLElement {
     }
 
     addEventListener() {
-        /*this.shadowRoot.querySelector(`close`).addEventListener('click', () => {
+        this.shadowRoot.querySelector(`button`).addEventListener('click', () => {
+            alert("Test geslaagd")
             this.shadowRoot.removeChild('recipe-message');
-        });*/
+        });
     }
 }
 

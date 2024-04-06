@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Ricetta.Data;
 
@@ -10,9 +11,11 @@ using Ricetta.Data;
 namespace Ricetta.Migrations
 {
     [DbContext(typeof(RicettaDbContext))]
-    partial class RicettaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240405083728_chat")]
+    partial class chat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.3");
@@ -254,7 +257,6 @@ namespace Ricetta.Migrations
 
                     b.Property<string>("Tagname")
                         .IsRequired()
-                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -301,27 +303,6 @@ namespace Ricetta.Migrations
                     b.HasIndex("SenderId");
 
                     b.ToTable("Messages");
-                });
-
-            modelBuilder.Entity("Ricetta.Data.Entities.Notification", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("RecipeId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("RecipeId");
-
-                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Ricetta.Data.Entities.PreparationStep", b =>
@@ -491,25 +472,6 @@ namespace Ricetta.Migrations
                     b.Navigation("Inbox");
 
                     b.Navigation("Sender");
-                });
-
-            modelBuilder.Entity("Ricetta.Data.Entities.Notification", b =>
-                {
-                    b.HasOne("Ricetta.Data.Entities.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Ricetta.Data.Entities.Recipe", "Recipe")
-                        .WithMany()
-                        .HasForeignKey("RecipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-
-                    b.Navigation("Recipe");
                 });
 
             modelBuilder.Entity("Ricetta.Data.Entities.PreparationStep", b =>

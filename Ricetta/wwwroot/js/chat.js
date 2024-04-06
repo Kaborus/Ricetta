@@ -33,13 +33,28 @@ const LobbyModule = (function () {
         event.preventDefault();
     });
 
+
     /*window.addEventListener("beforeunload", () => {
         connection.invoke("LeaveGroup", window.LobbyId).catch((err) => {
             console.error(err.toString());
         });*/
-    
-        return {};
-//})();
+
+    return {};
+    //})();
 })
 
 const module = new LobbyModule();
+
+
+const connection = new signalR.HubConnectionBuilder()
+    .withUrl("/chatHub")
+    .configureLogging(signalR.LogLevel.Information)
+    .build();
+
+connection.on("RecipeCreated", (recipeName, categoryName) => {
+    // Toon de melding aan de gebruiker
+
+    alert(`Nieuw recept aangemaakt: ${recipeName}, wat de categorie ${categoryName} heeft`);
+});
+
+connection.start().catch(err => console.error(err.toString()));
