@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ricetta", "Ricetta\Ricetta.csproj", "{3528595A-327A-4D56-95A4-85A0EF31F766}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ricetta", "Ricetta\Ricetta.csproj", "{3528595A-327A-4D56-95A4-85A0EF31F766}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RicettaTest", "RicettaTest\RicettaTest.csproj", "{64FD1B23-71E8-49CE-9C53-E02537101286}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{3528595A-327A-4D56-95A4-85A0EF31F766}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3528595A-327A-4D56-95A4-85A0EF31F766}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3528595A-327A-4D56-95A4-85A0EF31F766}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64FD1B23-71E8-49CE-9C53-E02537101286}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64FD1B23-71E8-49CE-9C53-E02537101286}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64FD1B23-71E8-49CE-9C53-E02537101286}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64FD1B23-71E8-49CE-9C53-E02537101286}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -14,9 +14,10 @@ class Message extends HTMLElement {
     createMessage() {
         const box = document.createElement('div');
         box.setAttribute('class', 'message');
+
         const closebtn = document.createElement('button');
         closebtn.textContent = "X";
-        box.innerHTML = "Test";
+        box.innerHTML = `Test`;
         this.shadowRoot.appendChild(box);
         this.shadowRoot.appendChild(closebtn);
     }
@@ -91,10 +92,12 @@ const connection = new signalR.HubConnectionBuilder()
     .configureLogging(signalR.LogLevel.Information)
     .build();
 
+connection.on("ChatCreated" , ()=> {
+    alert("Iemand heeft een chatroom met jou aangemaakt");
+}) 
+
 connection.on("RecipeCreated", (recipeName, categoryName) => {
     // Toon de melding aan de gebruiker
-
-
     alert(`Nieuw recept aangemaakt: ${recipeName}, wat de categorie ${categoryName} heeft`);
     customElements.define('recipe-message', Message);
 
