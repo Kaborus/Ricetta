@@ -17,7 +17,7 @@ class Message extends HTMLElement {
 
         const closebtn = document.createElement('button');
         closebtn.textContent = "X";
-        box.innerHTML = `Test`;
+        box.innerHTML = `Nieuw recept geplaatst`;
         this.shadowRoot.appendChild(box);
         this.shadowRoot.appendChild(closebtn);
     }
