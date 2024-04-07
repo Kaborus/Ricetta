@@ -2,33 +2,8 @@
     border: 2px solid red;
     border-radius: 4px;
     margin: 4px;
-    background-color: #f1f1f1;
+    background-color: #00ff90;
     display: flex;
     justify-content: center;
     padding: 4px;
-}
-
-
-.chat .chat__header h2 {
-    font-size: larger;
-    font-weight: bold;
-}
-
-.chat .chat__message {
-    display: flex;
-    flex-direction: column;
-    margin: 4px;
-}
-
-    .chat .chat__message button {
-        display: flex;
-        align-self: flex-end;
-        margin: 4px;
-        background-color: greenyellow;
-        border-radius: 4px;
-        padding: 10px;
-    }
-
-.chat .chat__footer p {
-    display: none;
 }
